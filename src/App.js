@@ -1,58 +1,41 @@
-import Button from "./Button";
-import styles from "./App.module.css";
-import { useState, useEffect } from "react";
-
-function Hello() {
-
-  function onCreated() {
-    console.log("hi");
-    return onDestroyed;
-  }
-
-  function onDestroyed() {
-    console.log("bye");
-  }
-
-  useEffect(onCreated, [])
-
-  return <h1>Hello</h1>
-}
+import { useState } from "react";
 
 function App() {
 
-  const [counter, setCounter] = useState(0);
-  const [keyword, setKeyword] = useState("");
-  const [showing, setShowing] = useState(false);
+  const [toDo, setToDo] = useState("");
+  const [toDos, setToDos] = useState([]);
 
-  const onClick = () => setCounter((prev) => prev + 1);
-  const onChange = (event) => setKeyword(event.target.value);
-
-
-  console.log("I run all the time");
-  useEffect(() => {
-    console.log("awake");
-  }, []);
-  useEffect(() => {
-    if (keyword !== "") {
-      console.log("search for", keyword);
+  const onChange = (event) => { setToDo(event.target.value); }
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (toDo === "") {
+      return;
     }
-  }, [keyword])
+
+    setToDos((current) => [toDo, ...current]);
+    setToDo("");
+
+    console.log(toDo);
+  };
 
   return (
-    <div className="App">
-      {showing ? <Hello /> : null}
-      <input
-        value={keyword}
-        onChange={onChange}
-        type="text"
-        placeholder="Search here"
-      />
-      <h1 className={styles.title}>{counter}</h1>
-      <Button text={"Continue"} />
-      <button onClick={onClick}>Click Me</button>
-      <button onClick={() => setShowing((prev) => !prev)}>{showing ? "Hide" : "Show"}</button>
+    <div>
+      <h1>My To Dos ({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input
+          onChange={onChange}
+          value={toDo}
+          type="text"
+          placeholder="Write To Do"
+        />
+        <button>Add To Do</button>
+      </form>
+      <hr />
+      <ul>
+        {toDos.map((item, index) => <li key={index}>{item}</li>)}
+      </ul>
     </div>
-  );
-}
+  )
+};
 
 export default App;
