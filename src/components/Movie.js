@@ -3,11 +3,11 @@ import {
     Link
 } from "react-router-dom";
 
-function Movie({ cover, title, genres, summary }) {
+function Movie({ id, cover, title, genres, summary }) {
     return (
         <div>
             <img src={cover} alt={title} />
-            <Link to="/movie">{title}</Link>
+            <Link to={`/movie/${id}`}>{title}</Link>
             <ul>
                 {genres.map(genre => <li key={genre}>{genre}</li>)}
             </ul>
@@ -17,6 +17,7 @@ function Movie({ cover, title, genres, summary }) {
 }
 
 Movie.prototypeopTypes = {
+    id: PropTypes.number.isRequired,
     cover: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     genres: PropTypes.arrayOf(PropTypes.string).isRequired,
